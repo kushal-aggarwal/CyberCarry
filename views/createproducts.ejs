@@ -1,0 +1,141 @@
+<%- include("./partials/header") %>
+
+<% if(success.length > 0) { %>
+    <div class="fixed top-5 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50">
+        <div id="flash-message" class="px-6 py-2 rounded-md bg-pink-500 shadow-lg">
+            <span class="text-white text-lg"><%= success[0] %></span>
+        </div>
+    </div>
+<% } %>
+
+<div class="min-h-screen bg-pink-100">
+
+    <div class="max-w-4xl mx-auto px-8 py-6">
+
+        <h1 class="text-4xl font-semibold">
+            Create Product
+        </h1>
+
+        <h3 class="mb-6 text-gray-600 ml-1">
+            Add a new Product to the Shop
+        </h3>
+
+        <div class="bg-white rounded-xl shadow-md p-8">
+
+            <form action="/products/create" method="POST" enctype="multipart/form-data">
+
+                <div class="mb-8">
+
+                    <h2 class="text-2xl font-semibold mb-6">
+                        Product Details
+                    </h2>
+
+                    <label class="block mb-2 font-medium">
+                        Product Image
+                    </label>
+
+                    <input class="w-full border rounded-lg px-4 py-3 file:bg-pink-500 file:text-white file:border-0 file:px-4 file:py-2 file:rounded-lg file:cursor-pointer file:hover:bg-pink-600 mb-6" type="file" name="image">
+
+                    <div class="grid grid-cols-2 gap-6">
+
+                        <div>
+                            <label class="block mb-2 font-medium">
+                                Product Name
+                            </label>
+
+                            <input class="w-full border rounded-lg px-4 py-3" type="text" name="name" placeholder="Bag Name">
+                        </div>
+
+                        <div>
+                            <label class="block mb-2 font-medium">
+                                Price
+                            </label>
+
+                            <input class="w-full border rounded-lg px-4 py-3" type="number" name="price" placeholder="9999">
+                        </div>
+
+                        <div>
+                            <label class="block mb-2 font-medium">
+                                Discount
+                            </label>
+
+                            <input class="w-full border rounded-lg px-4 py-3" type="number" name="discount" placeholder="999">
+                        </div>
+
+                        <div>
+                            <label class="block mb-2 font-medium">
+                                Background Color
+                            </label>
+
+                            <input class="w-full h-[50px] border rounded-lg cursor-pointer" type="color" name="bgcolor" value="#F8E5E2">
+                        </div>
+
+                    </div>
+
+                <button class="mt-10 w-full bg-pink-500 hover:bg-pink-600 text-white text-lg font-semibold py-4 rounded-xl transition">
+                    Create Product
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+<style>
+
+@keyframes slideIn {
+
+    0% {
+        transform: translateY(-80px);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
+
+}
+
+@keyframes slideOut {
+
+    0% {
+        transform: translateY(0);
+    }
+
+    100% {
+        transform: translateY(-80px);
+    }
+
+}
+
+#flash-message {
+    animation: slideIn 0.45s ease-out forwards;
+}
+
+</style>
+
+<script>
+
+const success = document.getElementById("flash-message");
+
+if(success) {
+
+    setTimeout(function() {
+
+        success.style.animation = "slideOut 0.45s ease-in forwards";
+
+        setTimeout(function() {
+
+            success.remove();
+
+        }, 450);
+
+    }, 2500);
+
+}
+
+</script>
+
+<%- include("./partials/footer") %>

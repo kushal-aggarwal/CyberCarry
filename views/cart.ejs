@@ -1,0 +1,109 @@
+<%- include('./partials/header') %>
+
+<div class="min-h-screen bg-pink-100">
+    <div class="max-w-7xl mx-auto px-8 py-10">
+        <h1 class="text-4xl font-semibold mb-8">Shopping Cart</h1>
+
+        <div class="flex gap-8">
+            <div class="w-[68%] flex flex-col gap-5">
+                <% user.cart.forEach(function(item){ %>
+                    <div class="bg-white rounded-xl shadow-sm p-5 flex gap-6">
+                        <div class="w-32 h-32 rounded-lg flex justify-center items-center bg-[<%= item.product.bgcolor %>]">
+                            <img class="max-h-24" src="data:image/jpeg;base64,<%= item.product.image.toString('base64') %>">
+                        </div>
+
+                        <div class="flex-1 flex flex-col justify-between">
+                            <div>
+                                <h2 class="text-2xl font-semibold"><%= item.product.name %></h2>
+                                <p class="text-gray-500 mt-1">Premium Leather Bag</p>
+                            </div>
+
+                            <div class="flex justify-between items-end">
+                                <div>
+                                    <p class="text-gray-500">₹ <%= item.product.price %> each</p>
+                                    <p class="font-semibold mt-1">Subtotal ₹ <%= (item.product.price - item.product.discount) * item.quantity %></p>
+                                </div>
+
+                                <div class="flex items-center bg-pink-400 rounded-full overflow-hidden"">
+
+                                    <a
+                                        href="/removefromcart/<%= item.product._id %>?redirect=cart"
+                                        class="cart-action-btn w-10 h-10 flex items-center justify-center hover:bg-pink-500 transition">
+                                        <i class="text-white ri-subtract-line font-bold"></i>
+                                    </a>
+
+                                    <div class="w-8 text-xl text-white text-center font-semibold">
+                                        <%= item.quantity %>
+                                    </div>
+
+                                    <a
+                                        href="/addtocart/<%= item.product._id %>?redirect=cart"
+                                        class="cart-action-btn w-10 h-10 flex items-center justify-center hover:bg-pink-500 transition">
+                                        <i class="text-white ri-add-line font-bold"></i>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+
+            <div class="w-[32%]">
+                <div class="sticky top-8 bg-white rounded-xl shadow-md p-6">
+                    <h2 class="text-2xl font-semibold mb-6">Order Summary</h2>
+
+                    <div class="flex justify-between mb-3">
+                        <span>Total MRP</span>
+                        <span>₹ <%= totalMRP %></span>
+                    </div>
+
+                    <div class="flex justify-between mb-3">
+                        <span>Discount</span>
+                        <span>-₹ <%= totalDiscount %></span>
+                    </div>
+
+                    <div class="flex justify-between mb-3">
+                        <span>Platform Fee</span>
+                        <span>₹20</span>
+                    </div>
+
+                    <div class="flex justify-between mb-6">
+                        <span>Shipping</span>
+                        <span>FREE</span>
+                    </div>
+
+                    <hr>
+
+                    <div class="flex justify-between text-xl font-bold my-6">
+                        <span>Total</span>
+                        <span>₹ <%= totalAmount %></span>
+                    </div>
+
+                    <a href="/orders/checkout" class="block w-full text-center bg-pink-400 hover:bg-pink-500 text-xl text-white py-4 rounded-xl font-semibold transition">
+                        Proceed to Checkout
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let y = sessionStorage.getItem("scrollY");
+
+    if(y !== null) {
+        window.scrollTo(0, y);
+        sessionStorage.removeItem("scrollY");
+    }
+
+    let buttons = document.querySelectorAll(".cart-action-btn");
+
+    buttons.forEach(function(btn) {
+        btn.addEventListener("click", function() {
+            sessionStorage.setItem("scrollY", window.scrollY);
+        });
+    });
+</script>
+
+<%- include('./partials/footer') %>

@@ -1,12 +1,14 @@
 const mongoose = require("mongoose");
+const config = require("config");
+const dbgr = require("debug")("development:mongoose");
 
 mongoose
-.connect("mongodb://127.0.0.1:27017/CyberBag")
-.then(function(){
-    console.log("connected");
+.connect(`${config.get("MONGODB_URI")}/CyberBag`)
+.then(function() {
+    dbgr("connected");
 })
-.catch(function(err){
-    console.log(err);
+.catch(function(err) {
+    dbgr(err);
 })
 
 module.exports = mongoose.connection;

@@ -1,0 +1,127 @@
+<%- include("./partials/header") %>
+
+<div class="min-h-screen bg-pink-100">
+    <div class="max-w-7xl mx-auto px-8 py-10">
+        <h1 class="text-4xl font-semibold mb-8">Checkout</h1>
+        <div class="flex gap-8">
+            <div class="w-[68%] flex flex-col gap-6">
+                <div class="bg-white rounded-xl shadow-sm p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-2xl font-semibold">Delivery Details</h2>
+                        <a
+                            href="/users/account?redirect=checkout"
+                            class="text-pink-500 hover:text-pink-600 font-medium">
+                            Edit
+                        </a>
+                    </div>
+
+                    <div class="flex flex-col gap-5">
+
+                        <div>
+                            <p class="text-gray-500 text-sm">Full Name</p>
+                            <p class="text-lg font-medium"><%= user.fullname %></p>
+                        </div>
+
+                        <div>
+                            <p class="text-gray-500 text-sm">Email</p>
+                            <p class="text-lg font-medium"><%= user.email %></p>
+                        </div>
+
+                        <div>
+                            <p class="text-gray-500 text-sm">Contact</p>
+                            <p class="text-lg font-medium"><%= user.contact || "Not Added" %></p>
+                        </div>
+
+                        <div>
+                            <p class="text-gray-500 text-sm">Delivery Address</p>
+                            <p class="text-lg font-medium whitespace-pre-line"><%= user.address || "No Address Added" %></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-sm p-6">
+                    <h2 class="text-2xl font-semibold mb-6">Order Items</h2>
+                    <div class="flex flex-col gap-5">
+                        <% user.cart.forEach(function(item){ %>
+                            <div class="flex items-center justify-between border-b pb-5">
+                                <div class="flex items-center gap-5">
+                                    <div class="w-24 h-24 rounded-lg flex justify-center items-center bg-[<%= item.product.bgcolor %>]">
+                                        <img
+                                            class="max-h-20"
+                                            src="data:image/jpeg;base64,<%= item.product.image.toString('base64') %>">
+                                    </div>
+                                    <div>
+                                        <h3 class="text-xl font-semibold"><%= item.product.name %></h3>
+                                        <p class="text-gray-500 mt-1">Qty : <%= item.quantity %></p>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-xl font-semibold">
+                                        ₹ <%= (item.product.price - item.product.discount) * item.quantity %>
+                                    </p>
+                                </div>
+                            </div>
+                        <% }) %>
+                    </div>
+                </div>
+            </div>
+
+            <div class="w-[32%]">
+                <div class="sticky top-8 bg-white rounded-xl shadow-md p-6">
+                    <h2 class="text-2xl font-semibold mb-6">
+                        Order Summary
+                    </h2>
+                    <div class="flex justify-between mb-3">
+                        <span>Total MRP</span>
+                        <span>₹ <%= totalMRP %></span>
+                    </div>
+                    <div class="flex justify-between mb-3">
+                        <span>Discount</span>
+                        <span>-₹ <%= totalDiscount %></span>
+                    </div>
+                    <div class="flex justify-between mb-3">
+                        <span>Platform Fee</span>
+                        <span>₹ <%= platformFee %></span>
+                    </div>
+                    <div class="flex justify-between mb-6">
+                        <span>Shipping</span>
+                        <span class="text-green-600 font-medium">FREE</span>
+                    </div>
+                    <hr>
+                    <div class="flex justify-between text-2xl font-bold my-6">
+                        <span>Total</span>
+                        <span class="text-pink-500">
+                            ₹ <%= totalAmount %>
+                        </span>
+                    </div>
+                    <form action="/orders/payment" method="POST">
+                        <button
+                            type="submit"
+                            class="btn w-full bg-pink-400 hover:bg-pink-500 text-white py-4 rounded-xl text-lg font-semibold transition">
+                            Place Order
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let y = sessionStorage.getItem("scrollY");
+
+    if(y !== null) {
+        window.scrollTo(0, y);
+        sessionStorage.removeItem("scrollY");
+    }
+
+    let buttons = document.querySelectorAll(".btn");
+
+    buttons.forEach(function(btn) {
+        btn.addEventListener("click", function() {
+            sessionStorage.setItem("scrollY", window.scrollY);
+        });
+    });
+</script>
+
+<%- include("./partials/footer") %>

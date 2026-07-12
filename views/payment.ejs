@@ -1,0 +1,170 @@
+<%- include("./partials/header") %>
+
+<div class="min-h-screen bg-pink-100">
+    <div class="max-w-7xl mx-auto px-8 py-10">
+        <h1 class="text-4xl font-semibold mb-8">Payment</h1>
+
+        <div class="flex gap-8">
+
+            <div class="w-[68%]">
+                <div class="bg-white rounded-xl shadow-sm p-6">
+
+                    <h2 class="text-2xl font-semibold mb-6">Choose Payment Method</h2>
+
+                    <div class="grid grid-cols-2 gap-6">
+
+                        <div id="cod-card" class="payment-card border-2 border-gray-200 rounded-xl p-8 cursor-pointer transition hover:shadow-md hover:-translate-y-1">
+                            <input id="cod" class="hidden" type="radio" name="payment" value="COD" checked>
+
+                            <div class="flex flex-col items-center">
+                                <i class="ri-truck-line text-6xl text-pink-500"></i>
+
+                                <h3 class="text-xl font-semibold mt-5">Cash on Delivery</h3>
+
+                                <p class="text-gray-500 text-center mt-2">Pay when your order arrives.</p>
+                            </div>
+                        </div>
+
+                        <div id="upi-card" class="payment-card border-2 border-gray-200 rounded-xl p-8 cursor-pointer transition hover:shadow-md hover:-translate-y-1">
+                            <input id="upi" class="hidden" type="radio" name="payment" value="UPI">
+
+                            <div class="flex flex-col items-center">
+                                <i class="ri-smartphone-line text-6xl text-pink-500"></i>
+
+                                <h3 class="text-xl font-semibold mt-5">UPI</h3>
+
+                                <p class="text-gray-500 text-center mt-2">Sc an a QR code to complete payment.</p>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div id="upi-section" class="hidden mt-10 pt-8 border-t">
+
+                        <div class="flex flex-col items-center">
+
+                            <img src="/images/kushal-aggarwal_github.png" class="w-72 rounded-xl shadow-md">
+
+                            <p class="text-lg font-medium mt-6">Scan using any UPI App</p>
+
+                            <p class="text-gray-500 mt-2">Google Pay • PhonePe • Paytm • BHIM</p>
+
+                            <div class="mt-6 px-5 py-3 rounded-xl bg-pink-100 text-pink-600">
+                                Demo Mode — No real payment is required.
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="w-[32%]">
+
+                <div class="sticky top-8 bg-white rounded-xl shadow-md p-6">
+
+                    <h2 class="text-2xl font-semibold mb-6">Payment Summary</h2>
+
+                    <div class="flex justify-between mb-3">
+                        <span>Total MRP</span>
+                        <span>₹ <%= totalMRP %></span>
+                    </div>
+
+                    <div class="flex justify-between mb-3">
+                        <span>Discount</span>
+                        <span>-₹ <%= totalDiscount %></span>
+                    </div>
+
+                    <div class="flex justify-between mb-3">
+                        <span>Platform Fee</span>
+                        <span>₹ <%= platformFee %></span>
+                    </div>
+
+                    <div class="flex justify-between mb-6">
+                        <span>Shipping</span>
+                        <span class="text-green-600 font-medium">FREE</span>
+                    </div>
+
+                    <hr>
+
+                    <div class="flex justify-between text-2xl font-bold my-6">
+                        <span>Total</span>
+                        <span class="text-pink-500">₹ <%= totalAmount %></span>
+                    </div>
+
+                    <form action="/orders/place" method="POST">
+
+                        <input id="paymentMethod" type="hidden" name="paymentMethod" value="COD">
+
+                        <button type="submit" class="btn w-full bg-pink-400 hover:bg-pink-500 text-white py-4 rounded-xl text-lg font-semibold transition">
+                            Confirm Order
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+    let codCard = document.getElementById("cod-card");
+    let upiCard = document.getElementById("upi-card");
+
+    let cod = document.getElementById("cod");
+    let upi = document.getElementById("upi");
+
+    let upiSection = document.getElementById("upi-section");
+
+    let paymentMethod = document.getElementById("paymentMethod");
+
+    function updateSelection() {
+
+        if(cod.checked) {
+            codCard.classList.add("border-pink-400");
+            codCard.classList.remove("border-gray-200");
+
+            upiCard.classList.remove("border-pink-400");
+            upiCard.classList.add("border-gray-200");
+
+            upiSection.classList.add("hidden");
+
+            paymentMethod.value = "COD";
+        }
+
+        if(upi.checked) {
+            upiCard.classList.add("border-pink-400");
+            upiCard.classList.remove("border-gray-200");
+
+            codCard.classList.remove("border-pink-400");
+            codCard.classList.add("border-gray-200");
+
+            upiSection.classList.remove("hidden");
+
+            paymentMethod.value = "UPI";
+        }
+
+    }
+
+    codCard.addEventListener("click", function() {
+        cod.checked = true;
+        updateSelection();
+    });
+
+    upiCard.addEventListener("click", function() {
+        upi.checked = true;
+        updateSelection();
+    });
+
+    updateSelection();
+
+</script>
+
+<%- include("./partials/footer") %>
