@@ -1,19 +1,20 @@
 const nodemailer = require("nodemailer");
 
 const transporter = nodemailer.createTransport({
-    service: "gmail",
+    host: "smtp.gmail.com",
+    port: 587,
+    secure: false,
+    requireTLS: true,
     auth: {
         user: process.env.MAIL_ID,
         pass: process.env.MAIL_PASS
-    }
+    },
+    family: 4
 });
 
-transporter.verify((err, success) => {
-    if (err) {
-        console.error("MAIL VERIFY ERROR:", err);
-    } else {
-        console.log("Mail server ready");
-    }
+transporter.verify((err) => {
+    if (err) console.error(err);
+    else console.log("Mail server ready");
 });
 
 module.exports = transporter;
