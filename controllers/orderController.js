@@ -81,7 +81,7 @@ module.exports.placeOrder = async function(req, res) {
 
     try {
         await resend.emails.send({
-            from: process.env.MAIL_ID,
+            from: "CyberCarry <onboarding@resend.dev>",
             to: user.email,
             subject: "Order Placed!",
             html: `
@@ -204,7 +204,7 @@ module.exports.placeOrder = async function(req, res) {
         });
     
         await resend.emails.send({
-            from: process.env.MAIL_ID,
+            from: "CyberCarry <onboarding@resend.dev>",
             to: process.env.MAIL_ID,
             subject: "New Order Received",
             html: `
