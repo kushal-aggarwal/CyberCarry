@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const userModel = require("../models/user-model");
 const orderModel = require("../models/order-model");
-const resend = require("../config/resend");
+const transporter = require("../config/nodemailer");
 const { generateToken } = require("../utils/generateToken");
 
 module.exports.checkout = async function(req, res) {
@@ -80,8 +80,8 @@ module.exports.placeOrder = async function(req, res) {
     await user.save();
 
     try {
-        await resend.emails.send({
-            from: "CyberCarry <onboarding@resend.dev>",
+        await transporter.sendMail({
+            from: `"CyberCarry" <${process.env.BREVO_EMAIL}>`,
             to: user.email,
             subject: "Order Placed!",
             html: `
@@ -203,11 +203,8 @@ module.exports.placeOrder = async function(req, res) {
                 `
         });
     
-console.log("Customer:", user.email);
-console.log("Admin:", process.env.MAIL_ID);
-
-        await resend.emails.send({
-            from: "CyberCarry <onboarding@resend.dev>",
+        await transporter.sendMail({
+            from: `"CyberCarry" <${process.env.BREVO_EMAIL}>`,
             to: process.env.MAIL_ID,
             subject: "New Order Received",
             html: `
