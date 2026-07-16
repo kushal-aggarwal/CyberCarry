@@ -80,7 +80,7 @@ module.exports.placeOrder = async function(req, res) {
     await user.save();
 
     try {
-        await apiInstance.sendTransacEmail({
+        await brevo.transactionalEmails.sendTransacEmail({
             sender: {
                 name: "CyberCarry",
                 email: process.env.BREVO_EMAIL
@@ -211,7 +211,7 @@ module.exports.placeOrder = async function(req, res) {
                 `
         });
     
-        await apiInstance.sendTransacEmail({
+        await brevo.transactionalEmails.sendTransacEmail({
             sender: {
                 name: "CyberCarry",
                 email: process.env.BREVO_EMAIL

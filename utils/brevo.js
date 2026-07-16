@@ -1,5 +1,7 @@
-const brevo = require("@getbrevo/brevo");
+const { BrevoClient } = require("@getbrevo/brevo");
 
-console.log(brevo);
+const brevo = new BrevoClient({
+    apiKey: process.env.BREVO_API_KEY,
+});
 
-module.exports = {};
+module.exports = brevo;
