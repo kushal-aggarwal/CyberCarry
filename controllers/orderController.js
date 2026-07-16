@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const userModel = require("../models/user-model");
 const orderModel = require("../models/order-model");
-const transporter = require("../config/nodemailer");
+const transporter = require("../config/transporter");
 const { generateToken } = require("../utils/generateToken");
 
 module.exports.checkout = async function(req, res) {
