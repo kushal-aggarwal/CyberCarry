@@ -278,10 +278,18 @@ module.exports.placeOrder = async function(req, res) {
             `
         });
     }
-    catch(err) {
-        console.error("Email Error:");
-        console.dir(err, { depth: null });
+    catch (err) {
+    console.log("========== BREVO ERROR ==========");
+
+    console.dir(err, { depth: null });
+
+    if (err.response) {
+        console.log("STATUS:", err.response.status);
+        console.dir(err.response.data, { depth: null });
     }
+
+    console.log("================================");
+}
 
     res.redirect("/orders/success/" + order._id);
 }
