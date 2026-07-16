@@ -82,27 +82,16 @@ router.get("/removefromcart/:productid", isloggedin, async function(req, res) {
     res.redirect("/" + req.query.redirect);
 });
 
-router.get("/test-email", async (req, res) => {
+router.get("/test-gmail", async (req, res) => {
     try {
-        const sendEmail = require("../utils/brevo");
-
-        const result = await sendEmail({
-            sender: {
-                name: "CyberCarry",
-                email: "cyberforge.build@gmail.com"
-            },
-            to: [
-                {
-                    email: "kushalaggarwalonline@yahoo.com",
-                },
-            ],
-            subject: "CyberCarry Test",
-            htmlContent: "<h1>Hello from CyberCarry!</h1>",
+        await transporter.sendMail({
+            from: `"CyberCarry" <${process.env.MAIL_ID}>`,
+            to: process.env.MAIL_ID,
+            subject: "SMTP Test",
+            html: "<h1>SMTP works 🎉</h1>"
         });
 
-        console.log(result);
-
-        res.send("Email sent!");
+        res.send("Sent!");
     } catch (err) {
         console.error(err);
         res.status(500).send(err.message);
