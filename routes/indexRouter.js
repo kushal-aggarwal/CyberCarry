@@ -10,7 +10,11 @@ router.get("/", function(req, res) {
 });
 
 router.get("/shop", isloggedin, async function(req, res) {
-    let products = await productModel.find();
+    console.time("find products");
+
+let products = await productModel.find().lean();
+
+console.timeEnd("find products");
 
     if(req.query.sortby === "priceAsc") {
         products.sort(function(a, b) {
