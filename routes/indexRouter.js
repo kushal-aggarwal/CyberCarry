@@ -3,7 +3,6 @@ const router = express.Router();
 const userModel = require("../models/user-model");
 const productModel = require("../models/product-model");
 const isloggedin = require("../middlewares/isLoggedIn");
-const transporter = require("../utils/mailer");
 
 router.get("/", function(req, res) {
     let error = req.flash("error");
@@ -81,22 +80,6 @@ router.get("/removefromcart/:productid", isloggedin, async function(req, res) {
     await user.save();
     req.flash("success", "Cart Updated");
     res.redirect("/" + req.query.redirect);
-});
-
-router.get("/test-gmail", async (req, res) => {
-    try {
-        await transporter.sendMail({
-            from: `"CyberCarry" <${process.env.MAIL_ID}>`,
-            to: process.env.MAIL_ID,
-            subject: "SMTP Test",
-            html: "<h1>Hello from Gmail SMTP!</h1>",
-        });
-
-        res.send("Email sent!");
-    } catch (err) {
-        console.error(err);
-        res.status(500).send(err.message);
-    }
 });
 
 module.exports = router;
