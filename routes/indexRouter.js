@@ -93,7 +93,7 @@ router.get("/test-email", async (req, res) => {
             },
             to: [
                 {
-                    email: "cyberforge.build@gmail.com",
+                    email: "kushalaggarwalonline@yahoo.com",
                 },
             ],
             subject: "CyberCarry Test",
