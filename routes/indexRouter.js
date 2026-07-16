@@ -82,4 +82,31 @@ router.get("/removefromcart/:productid", isloggedin, async function(req, res) {
     res.redirect("/" + req.query.redirect);
 });
 
+router.get("/test-email", async (req, res) => {
+    try {
+        const sendEmail = require("../utils/brevo");
+
+        const result = await sendEmail({
+            sender: {
+                name: "CyberCarry",
+                email: process.env.BREVO_EMAIL,
+            },
+            to: [
+                {
+                    email: "kushalaggarwalofficial@gmail.com",
+                },
+            ],
+            subject: "CyberCarry Test",
+            htmlContent: "<h1>Hello from CyberCarry!</h1>",
+        });
+
+        console.log(result);
+
+        res.send("Email sent!");
+    } catch (err) {
+        console.error(err);
+        res.status(500).send(err.message);
+    }
+});
+
 module.exports = router;
