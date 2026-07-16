@@ -81,10 +81,8 @@ module.exports.placeOrder = async function(req, res) {
 
     console.log("Reached Brevo");
     console.log("BREVO API KEY EXISTS:", !!process.env.BREVO_API_KEY);
-    console.dir(brevo, { depth: 2 });
 
     try {
-        console.dir(brevo, { depth: 2 });
         await sendEmail({
             sender: {
                 name: "CyberCarry",
