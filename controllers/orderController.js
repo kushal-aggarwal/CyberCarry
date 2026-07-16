@@ -80,8 +80,11 @@ module.exports.placeOrder = async function(req, res) {
     await user.save();
 
     console.log("Reached Brevo");
+    console.log("BREVO API KEY EXISTS:", !!process.env.BREVO_API_KEY);
+    console.dir(brevo, { depth: 2 });
 
     try {
+        console.dir(brevo, { depth: 2 });
         await brevo.transactionalEmails.sendTransacEmail({
             sender: {
                 name: "CyberCarry",
@@ -283,14 +286,13 @@ module.exports.placeOrder = async function(req, res) {
     catch (err) {
     console.log("========== BREVO ERROR ==========");
 
+    console.log("name:", err.name);
+    console.log("message:", err.message);
+    console.log("stack:", err.stack);
+
     console.dir(err, { depth: null });
 
-    if (err.response) {
-        console.log("STATUS:", err.response.status);
-        console.dir(err.response.data, { depth: null });
-    }
-
-    console.log("================================");
+    console.log("===============================");
 }
 
     res.redirect("/orders/success/" + order._id);
