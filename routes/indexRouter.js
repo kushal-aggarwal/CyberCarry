@@ -3,6 +3,7 @@ const router = express.Router();
 const userModel = require("../models/user-model");
 const productModel = require("../models/product-model");
 const isloggedin = require("../middlewares/isLoggedIn");
+const transporter = require("../utils/mailer");
 
 router.get("/", function(req, res) {
     let error = req.flash("error");
@@ -88,10 +89,10 @@ router.get("/test-gmail", async (req, res) => {
             from: `"CyberCarry" <${process.env.MAIL_ID}>`,
             to: process.env.MAIL_ID,
             subject: "SMTP Test",
-            html: "<h1>SMTP works 🎉</h1>"
+            html: "<h1>Hello from Gmail SMTP!</h1>",
         });
 
-        res.send("Sent!");
+        res.send("Email sent!");
     } catch (err) {
         console.error(err);
         res.status(500).send(err.message);
