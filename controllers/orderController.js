@@ -203,6 +203,9 @@ module.exports.placeOrder = async function(req, res) {
                 `
         });
     
+console.log("Customer:", user.email);
+console.log("Admin:", process.env.MAIL_ID);
+
         await resend.emails.send({
             from: "CyberCarry <onboarding@resend.dev>",
             to: process.env.MAIL_ID,
