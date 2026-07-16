@@ -89,11 +89,11 @@ router.get("/test-email", async (req, res) => {
         const result = await sendEmail({
             sender: {
                 name: "CyberCarry",
-                email: process.env.BREVO_EMAIL,
+                email: "cyberforge.build@gmail.com"
             },
             to: [
                 {
-                    email: "kushalaggarwalofficial@gmail.com",
+                    email: "cyberforge.build@gmail.com",
                 },
             ],
             subject: "CyberCarry Test",
