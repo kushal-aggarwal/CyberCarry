@@ -4,6 +4,7 @@ const bcrypt = require("bcrypt");
 const userModel = require("../models/user-model");
 const orderModel = require("../models/order-model");
 const transporter = require("../config/transporter");
+const apiInstance = require("../utils/brevo");
 const { generateToken } = require("../utils/generateToken");
 
 module.exports.checkout = async function(req, res) {
@@ -80,11 +81,19 @@ module.exports.placeOrder = async function(req, res) {
     await user.save();
 
     try {
-        await transporter.sendMail({
-            from: `"CyberCarry" <${process.env.BREVO_EMAIL}>`,
-            to: user.email,
+        await apiInstance.sendTransacEmail({
+            sender: {
+                name: "CyberCarry",
+                email: process.env.BREVO_EMAIL
+            },
+            to: [
+                {
+                    email: user.email,
+                    name: user.fullname
+                }
+            ],
             subject: "Order Placed!",
-            html: `
+            htmlContent: `
                 <div style="max-width:600px;margin:auto;background:#ffffff;font-family:Arial,sans-serif;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden;">
     
                     <div style="background:#ec4899;padding:24px;text-align:center;color:white;">
@@ -203,11 +212,20 @@ module.exports.placeOrder = async function(req, res) {
                 `
         });
     
-        await transporter.sendMail({
-            from: `"CyberCarry" <${process.env.BREVO_EMAIL}>`,
-            to: process.env.MAIL_ID,
+        await apiInstance.sendTransacEmail({
+            sender: {
+                name: "CyberCarry",
+                email: process.env.BREVO_EMAIL
+            },
+
+            to: [
+                {
+                    email: process.env.MAIL_ID
+                }
+            ],
+
             subject: "New Order Received",
-            html: `
+            htmlContent: `
             <div style="max-width:650px;margin:auto;font-family:Arial,sans-serif;background:white;border-radius:16px;overflow:hidden;border:1px solid #e5e7eb;">
                 <div style="background:#111827;padding:30px;text-align:center;color:white;">
                     <h1 style="margin:0;">🛒 New Order Received</h1>
@@ -262,7 +280,8 @@ module.exports.placeOrder = async function(req, res) {
         });
     }
     catch(err) {
-        console.error("Email Error:", err);
+        console.error("Email Error:");
+        console.dir(err, { depth: null });
     }
 
     res.redirect("/orders/success/" + order._id);
