@@ -79,6 +79,8 @@ module.exports.placeOrder = async function(req, res) {
     user.cart = [];
     await user.save();
 
+    console.log("Reached Brevo");
+
     try {
         await brevo.transactionalEmails.sendTransacEmail({
             sender: {
