@@ -12,7 +12,7 @@ mongoose
     console.log("MongoDB Connected");
   })
   .catch(function (err) {
-    console.error("MONGODB CONNECTION ERROR:");
+    console.error("MONGODB CONNECTION ERROR: ");
     console.error(err);
   });
 

@@ -21,7 +21,7 @@ const sendEmail = async (data) => {
     console.log("Response Body:");
     console.log(text);
 
-    if (!response.ok) {
+    if(!response.ok) {
         throw new Error(text);
     }
 

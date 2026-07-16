@@ -284,9 +284,9 @@ module.exports.placeOrder = async function(req, res) {
     catch (err) {
     console.log("========== BREVO ERROR ==========");
 
-    console.log("name:", err.name);
-    console.log("message:", err.message);
-    console.log("stack:", err.stack);
+    console.log("name: ", err.name);
+    console.log("message: ", err.message);
+    console.log("stack :", err.stack);
 
     console.dir(err, { depth: null });
 
